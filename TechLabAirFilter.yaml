@@ -1,0 +1,178 @@
+esphome:
+  name: techlabairfilter
+
+esp32:
+  board: lolin_s2_mini
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  password: ""
+
+ota:
+  - platform: esphome
+    password: ""
+
+wifi:
+  networks:
+    - ssid: "BARN"
+      password: "Community!"
+    - ssid: "NETGEAR80"
+      password: "boldsea631"
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Barn1 Fallback Hotspot"
+    password: "fred1234"
+
+captive_portal:
+
+# Example configuration entry
+
+web_server:
+
+esp32_touch:
+    measurement_duration: 100us
+    denoise_grade: BIT12
+    denoise_cap_level: L0
+    debounce_count: 1
+    filter_mode: IIR_16
+    noise_threshold: 0
+    jitter_step: 0
+    smooth_mode: IIR_2
+    #setup_mode: true   #uncomment to see raw values
+
+# Enable the I2C bus
+i2c:
+  - id: bus_a
+    sda: GPIO33 
+    scl: GPIO35 
+    scan: True # Optional: Scans the bus for devices at startup
+  - id: bus_b
+    sda: GPIO9 # MISO Replacement
+    scl: GPIO11 # MOSI Replacement
+    scan: True # Optional: Scans the bus for devices at startup
+
+
+sensor:
+  - platform: lps22
+    i2c_id: bus_a
+    address: 0x5C
+    pressure:
+      name: "Pressure Bus a Sensor 0x5C"
+      unit_of_measurement: "hPa"
+      icon: "mdi:gauge"
+      accuracy_decimals: 4
+    update_interval: 5s # The interval to check the sensor
+
+  - platform: lps22
+    i2c_id: bus_a
+    address: 0x5D
+    pressure:
+      name: "Pressure Bus a Sensor 0x5D"
+      unit_of_measurement: "hPa"
+      icon: "mdi:gauge"
+      accuracy_decimals: 4
+    update_interval: 5s # The interval to check the sensor
+
+  - platform: lps22                                                                                                                                                                               
+    i2c_id: bus_b
+    address: 0x5C
+    pressure:
+      name: "Pressure Bus b Sensor 0x5C"
+      unit_of_measurement: "hPa"
+      icon: "mdi:gauge"
+      accuracy_decimals: 4
+    update_interval: 5s # The interval to check the sensor
+
+  - platform: lps22
+    i2c_id: bus_b
+    address: 0x5D
+    pressure:
+      name: "Pressure Bus b Sensor 0x5D"
+      unit_of_measurement: "hPa"
+      icon: "mdi:gauge"
+      accuracy_decimals: 4
+    update_interval: 5s # The interval to check the sensor
+
+
+  - platform: dht
+    pin: GPIO4
+    temperature:
+      filters:
+        - lambda: return x * (9.0/5.0) + 32.0;
+      unit_of_measurement: "°F"
+      name: "Room Temperature"
+    humidity:
+      name: "Room Humidity"
+    update_interval: 60s
+
+binary_sensor:
+  - platform: esp32_touch
+    name: "Touch 1"
+    pin: GPIO3
+    threshold: 60000
+  - platform: esp32_touch
+    name: "Touch 2"
+    pin: GPIO1
+    threshold: 60000  
+  - platform: esp32_touch
+    name: "Touch 3"
+    pin: GPIO2
+    threshold: 60000  
+  - platform: esp32_touch
+    name: "Touch 4"
+    pin: GPIO5
+    threshold: 60000
+
+  - platform: gpio
+    pin:
+      number: GPIO8
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Alarm Reset"
+  - platform: gpio
+    pin:
+      number: GPIO10
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Switch 2"
+  - platform: gpio
+    pin:
+      number: GPIO13
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Switch 3"
+  - platform: gpio
+    pin:
+      number: GPIO14
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: "Switch 4"
+
+
+light:
+  - platform: status_led
+    name: "Red Lamp"
+    pin: GPIO36
+  - platform: status_led
+    name: "Amber Lamp"
+    pin: GPIO34
+  - platform: status_led
+    name: "Green Lamp"
+    pin: GPIO16
+  - platform: status_led
+    name: "Audible Alarm"
+    pin: GPIO21
