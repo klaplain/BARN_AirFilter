@@ -4,7 +4,9 @@ This project is for the BARN Laser Air Filter System.  It includes the filter bo
 
 The filter box is constructed fron 1/8" MDF
 The filters are 
+
   UBeesize 12x24x1 Reusable Electrostatic Air Filter HVAC AC Furnace Filter,MERV 8,Washable, Lasts a Lifetime,Permanent Air Filter,Breathe Fresher,Home And Office(Actual Size:11.38x23.38x0.82 Inch)
+  
   Nordic Pure 12x24x1 (11 1/2 x 23 1/2 x 3/4) Pleated Air Filters MERV 14 Plus Carbon 2 Pack
 
 The ESPHome runs on the custom LolinS2Mini PCB
