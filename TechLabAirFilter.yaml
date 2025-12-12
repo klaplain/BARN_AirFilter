@@ -21,8 +21,6 @@ wifi:
   networks:
     - ssid: "BARN"
       password: "Community!"
-    - ssid: "NETGEAR80"
-      password: "boldsea631"
 
   # Enable fallback hotspot (captive portal) in case wifi connection fails
   ap:
